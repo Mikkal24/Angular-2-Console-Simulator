@@ -2,7 +2,7 @@
 
 This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.2.0.
 
-Pull requests welcome!
+Pull requests welcome! https://github.com/Mikkal24/Angular-2-Console-Simulator
 
 # Description
 
