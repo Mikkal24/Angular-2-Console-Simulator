@@ -1,0 +1,17 @@
+div {
+  background-color: black;
+  border: 1px solid lightgray;
+  color: white;
+  height: 500px;
+  width: 1000px;
+  font-family: "Lucida Console";
+  padding: 2px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+span {
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
