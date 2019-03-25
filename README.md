@@ -2,6 +2,8 @@
 
 This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.2.0.
 
+Pull requests welcome!
+
 # Description
 
 The idea behind this project is to simulate a normal command line environment within the web-browser using Angular. The console is also customizable so developers can add their own commands (functions) to their console simulator
