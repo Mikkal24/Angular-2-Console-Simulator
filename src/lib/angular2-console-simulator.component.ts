@@ -20,7 +20,7 @@ export class ConsoleSimulator implements OnInit {
   @ViewChild("terminal") terminal: ElementRef;
   constructor() {}
   ngOnInit() {
-    this._controller = this.config;
+    this._controller = this.config || {commands: []};
     this._defaultFunctions = [
       {
         alias: "help",
@@ -29,8 +29,18 @@ export class ConsoleSimulator implements OnInit {
       },
       {
         alias: "goodbye",
-        function: this.goodbye.bind(this),
+        function: this._goodbye.bind(this),
         description: "goodbye :("
+      },
+      {
+        alias: "currentscript",
+        function: this._currentScript.bind(this),
+        description: "logs whatever script the browser is currently running"
+      },
+      {
+        alias: "tor",
+        function: this._tor.bind(this),
+        description: "Like the linux 'top' command except it lists resources on the page"
       }
     ];
 
@@ -39,12 +49,12 @@ export class ConsoleSimulator implements OnInit {
     );
   }
 
-  _handleKeyPress(event: KeyboardEvent) {
+  private _handleKeyPress(event: KeyboardEvent) {
     if (event.key === "Enter") return this._executeCommand(this._command);
     this._addLetter(event.key);
   }
 
-  _handleKeyDown(event: KeyboardEvent) {
+  private _handleKeyDown(event: KeyboardEvent) {
     switch (event.key) {
       case "Backspace":
         this._removeLetter();
@@ -52,22 +62,22 @@ export class ConsoleSimulator implements OnInit {
     }
   }
 
-  _addLetter(letter: string) {
+  private _addLetter(letter: string) {
     this._command += letter;
   }
 
-  _removeLetter() {
+  private _removeLetter() {
     this._command = this._command.substring(0, this._command.length - 1);
   }
 
-  _log(text) {
+  private _log(text) {
     this._logHistory.push(text);
     setTimeout(() => {
       this.terminal.nativeElement.scrollTop = 1000000000;
     }, 100);
   }
 
-  _executeCommand(fullCommand: string) {
+  private _executeCommand(fullCommand: string) {
     if (fullCommand.length < 1) {
       return this._log(this._location + " > " + fullCommand);
     }
@@ -79,7 +89,8 @@ export class ConsoleSimulator implements OnInit {
     });
 
     if (typeof foundFunc !== "undefined") {
-      const args = fullCommand.split(" ").splice(-1, 1);
+      let args = fullCommand.split(" ");
+      args.shift();
       const windowLog = console.log;
       console.log = this._log.bind(this);
       foundFunc.function(args);
@@ -91,20 +102,50 @@ export class ConsoleSimulator implements OnInit {
     }
   }
 
-  _clearCommand() {
+  private _clearCommand() {
     this._command = "";
   }
 
-  _help() {
+  private _help() {
     this._log("This is the list of available commands:");
     this._controller.commands.forEach((func, i) => {
       this._log(`${i + 1}. ${func.alias}: ${func.description}`);
     });
   }
 
-  goodbye() {
+  private _goodbye() {
     this._log("... Oh no.");
     this._log("You say Goodbye and I say Hello, hello, hello");
     this._log("I don't know why you say Goodbye I say Hello");
+  }
+
+  private _currentScript(){
+    this._log(document.currentScript || "no script is currently running");
+  }
+
+  private _tor(args: string[]){
+    //table of resources
+    const option:string = args[0];
+    const value:string = args[1];
+    let entries: any[];
+    this._log("Resource List")
+    switch(option){
+      case "-n":
+      case "-name":
+        entries = window.performance.getEntriesByName(value)
+        
+        break;
+      case "-t":
+      case "-type":
+        entries = window.performance.getEntriesByType(value)
+        break;
+      default:
+        entries = window.performance.getEntries()
+    }
+    
+    entries.forEach((entry,i) => {
+      this._log(`${i}: ${entry.name} | ${entry.entryType} | ${entry.duration.toFixed(2)}`)
+    })
+    
   }
 }

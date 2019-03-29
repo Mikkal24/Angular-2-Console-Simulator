@@ -1,6 +1,6 @@
 {
   "name": "angular2-console-simulator",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "The idea behind this project is to simulate a normal command line environment within the web-browser using Angular. The console is also customizable so developers can add their own commands (functions) to their console simulator",
   "homepage": "https://github.com/Mikkal24/Angular-2-Console-Simulator#readme",
   "bugs": {

@@ -31,7 +31,7 @@ import { Angular2ConsoleSimulatorModule } from "angular2-console-simulator";
 
 @NgModule({
   declarations: [...],
-  imports: [..., AppRoutingModule, ...],
+  imports: [..., Angular2ConsoleSimulatorModule, ...],
   providers: [...],
   bootstrap: [...]
 })
